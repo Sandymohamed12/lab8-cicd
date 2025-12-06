@@ -22,7 +22,7 @@ pipeline {
             steps {
                 bat """
                 call venv\\Scripts\\activate
-                pylint src || echo "Lint completed with warnings"
+                pylint src || echo "Lint finished with warnings"
                 """
             }
         }
