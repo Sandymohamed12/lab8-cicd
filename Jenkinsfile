@@ -2,13 +2,12 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout') {
-            steps {
-                checkout scm
-            }
+            steps { checkout scm }
         }
 
-        stage('Set up Python venv') {
+        stage('Setup Python') {
             steps {
                 bat """
                 python -m venv venv
@@ -19,16 +18,16 @@ pipeline {
             }
         }
 
-        stage('Lint') {
+        stage('Run Lint') {
             steps {
                 bat """
                 call venv\\Scripts\\activate
-                pylint src || echo "pylint finished with warnings"
+                pylint src || echo "Lint completed with warnings"
                 """
             }
         }
 
-        stage('Unit Tests with Coverage') {
+        stage('Run Unit Tests + Coverage') {
             steps {
                 bat """
                 call venv\\Scripts\\activate
@@ -39,11 +38,7 @@ pipeline {
     }
 
     post {
-        success {
-            echo " CI basic pipeline finished successfully"
-        }
-        failure {
-            echo "CI basic pipeline failed"
-        }
+        success { echo "✓ Build Successful" }
+        failure { echo "✗ Build Failed" }
     }
 }
